@@ -192,7 +192,7 @@ function calcUnit(i, btn){
     btn.disabled = false; btn.textContent = 'احسبها بفلوس النهاردة';
     if(!r || r.error){ alert('راجع الأرقام.'); return; }
     var res = document.getElementById('ures'+i);
-    res.innerHTML = 'قيمتها <b>بفلوس النهاردة: '+fmt(r.pv)+' ج</b><br>يعني خطة التقسيط دي بتاكل من قيمتها حوالي <b>'+fmt(r.diff)+' ج</b> مقارنة بسعرها النهاردة.';
+    res.innerHTML = 'قيمتها <b>بفلوس النهاردة: '+fmt(r.pv)+' ج</b><br>يعني خطة التقسيط دي بتوفر لك من تمنها حوالي <b>'+fmt(r.diff)+' ج</b> مقارنة بسعرها كاش النهاردة.';
     res.style.display = 'block';
   });
 }
