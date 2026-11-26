@@ -288,16 +288,23 @@ document.querySelectorAll('.intent').forEach(function(el){
 });
 
 function normPhone(p){
-  p = (p||"").replace(/[٠-٩]/g, function(d){ return "٠١٢٣٤٥٦٧٨٩".indexOf(d)+""; });
-  p = p.replace(/[\s\-\(\)]/g,"").replace(/^\+/,"");
-  if(p.indexOf("0020")===0){ p = p.substring(4); }
-  else if(p.indexOf("20")===0){ p = p.substring(2); }
-  p = p.replace(/\D/g,"");
-  if(/^1[0125][0-9]{8}$/.test(p)){ p = "0"+p; }
-  if(/^01[0125][0-9]{8}$/.test(p)){ return p; }
+  p = (p||"").replace(/[٠-٩۰-۹]/g, function(d){ var i = "٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹".indexOf(d); return (i%10)+""; });
+  if(/[a-zA-Zء-ي]/.test(p)){ return null; }
+  var hadPlus = /^\s*\+/.test(p);
+  p = p.replace(/[\s\-\(\)]/g,"");
+  var digits = p.replace(/\D/g,"");
+  var eg = digits;
+  if(eg.indexOf("0020")===0){ eg = "0"+eg.substring(4); }
+  else if(eg.indexOf("20")===0 && eg.length===12){ eg = "0"+eg.substring(2); }
+  if(/^1[0125][0-9]{8}$/.test(eg)){ eg = "0"+eg; }
+  if(/^01[0125][0-9]{8}$/.test(eg) && !/^(\d)\1+$/.test(eg.substring(1))){ return "2"+eg; }
+  var intl = null;
+  if(hadPlus){ intl = digits; }
+  else if(p.indexOf("00")===0){ intl = digits.substring(2); }
+  if(intl && intl.length>=8 && intl.length<=15 && !/^(\d)\1+$/.test(intl)){ return intl; }
   return null;
 }
-var PHONE_ERR = "رقم الموبايل مش صح. اكتب رقم مصري 11 رقم يبدأ بـ 010 أو 011 أو 012 أو 015.";
+var PHONE_ERR = "رقم الموبايل مش صح. اكتب رقم مصري 11 رقم يبدأ بـ 010 أو 011 أو 012 أو 015، أو رقم دولي بـ + وكود الدولة.";
 function postLead(name, phone, intent, kind){
   if(LEADS_ENDPOINT){
     try {
