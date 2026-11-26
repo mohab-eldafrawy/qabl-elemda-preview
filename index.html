@@ -218,8 +218,6 @@
       <tr><td>الباقي اللي بيتستثمر</td><td id="iInvest"></td></tr>
       <tr><td>القسط</td><td id="iInst"></td></tr>
       <tr><td>قسط السنة</td><td id="iAnnual"></td></tr>
-      <tr><td>إجمالي الأقساط على الورق</td><td id="iTotal"></td></tr>
-      <tr id="iLeftTodayRow" style="display:none"><td>الفاضل في الآخر يساوي كام <b>بفلوس النهاردة</b>؟</td><td id="iLeftToday"></td></tr>
     </table>
     <div class="big">
       <div class="val" id="iBig">0</div>
@@ -423,25 +421,20 @@ function calcInvest(){
     document.getElementById('iInvest').textContent = fmt(r.invest);
     document.getElementById('iInst').textContent = fmt(r.inst);
     document.getElementById('iAnnual').textContent = fmt(r.annualInst);
-    document.getElementById('iTotal').textContent = fmt(r.totalInst);
-    var ltr = document.getElementById('iLeftTodayRow');
     var v = document.getElementById('iVerdict');
     if(r.covers){
       countUp(document.getElementById('iBig'), r.leftover);
       document.getElementById('iBigLbl').innerHTML = 'عندك شقة، وكمان هتاخد عليها المبلغ ده <b>في جيبك</b> 🎉 (جنيه)';
       document.getElementById('iCoverLine').textContent = 'الاستثمار بيغطي الأقساط لحد آخر لحظة، وكمان بتكسب فوقيها 💪';
-      ltr.style.display = '';
-      document.getElementById('iLeftToday').textContent = fmt(r.leftoverToday) + ' ج';
       if(r.leftover < C){
-        v.textContent = 'يعني بدل ما تدفع '+fmt(P)+' ج على الورق، طلعت من جيبك في الآخر '+fmt(C - r.leftover)+' ج بس، وفضلتلك '+fmt(r.leftover)+' ج بعد آخر قسط (تعادل '+fmt(r.leftoverToday)+' ج بفلوس النهاردة).';
+        v.textContent = 'يعني بدل ما تدفع '+fmt(P)+' ج على الورق، طلعت من جيبك في الآخر '+fmt(C - r.leftover)+' ج بس، وفضلتلك '+fmt(r.leftover)+' ج بعد آخر قسط.';
       } else {
-        v.textContent = 'الاستثمار دفع كل الأقساط، ورجعلك فلوسك الـ '+fmt(C)+' ج وزيادة '+fmt(r.leftover - C)+' ج في آخر الخطة (الفاضل كله يعادل '+fmt(r.leftoverToday)+' ج بفلوس النهاردة).';
+        v.textContent = 'الاستثمار دفع كل الأقساط، ورجعلك فلوسك الـ '+fmt(C)+' ج وزيادة '+fmt(r.leftover - C)+' ج في آخر الخطة.';
       }
     } else {
       countUp(document.getElementById('iBig'), r.failYear);
       document.getElementById('iBigLbl').innerHTML = 'الفلوس بتخلص في <b>السنة دي</b>';
       document.getElementById('iCoverLine').textContent = 'لأ، الاستثمار مش بيغطي الخطة كلها';
-      ltr.style.display = 'none';
       v.textContent = 'في السنة '+r.failYear+' هينقصك حوالي '+fmt(r.shortfall)+' ج، وإجمالي اللي هيتحسب من جيبك على باقي الخطة '+fmt(r.totalOOP)+' ج. جرّب تزوّد الكاش أو تختار خطة أقصر.';
     }
     var res = document.getElementById('cashResult');
