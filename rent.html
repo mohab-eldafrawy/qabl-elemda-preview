@@ -311,6 +311,7 @@ function unlock(){
   if(!name){ alert("اكتب اسمك."); return; }
   if(!phone){ alert(PHONE_ERR); return; }
   if(!chosenIntent){ alert("اختار: بتفكر تشتري إمتى؟"); return; }
+  try{localStorage.setItem('qe_lead_v1',JSON.stringify({name:name,phone:rawPhone.trim(),intent:chosenIntent}));}catch(e){}
   postLead(name, rawPhone.trim(), chosenIntent, 'حاسبة عائد الإيجار');
   document.getElementById('gate').style.display = 'none';
   document.getElementById('app').classList.remove('locked');
@@ -323,6 +324,12 @@ function sendWA(opener){
 }
 document.getElementById('waBtn').addEventListener('click',function(){ sendWA("أهلاً، أنا استخدمت حاسبة «عائد الإيجار» وعايز شيت الإكسل بالتفاصيل سنة بسنة."); });
 document.getElementById('waBtn2').addEventListener('click',function(){ sendWA("أهلاً، أنا استخدمت حاسبة «عائد الإيجار» وعايز أحجز موعد/مكالمة عشان تفهمني الأرقام دي."); });
+
+(function(){try{var s=JSON.parse(localStorage.getItem('qe_lead_v1')||'null');
+  if(s&&s.name&&s.phone&&s.intent){
+    document.getElementById('leadName').value=s.name; document.getElementById('leadPhone').value=s.phone; chosenIntent=s.intent;
+    document.getElementById('gate').style.display='none'; document.getElementById('app').classList.remove('locked');
+  }}catch(e){}})();
 </script>
 </body>
 </html>
