@@ -218,6 +218,7 @@
       <tr><td>الباقي اللي بيتستثمر</td><td id="iInvest"></td></tr>
       <tr><td>القسط</td><td id="iInst"></td></tr>
       <tr><td>قسط السنة</td><td id="iAnnual"></td></tr>
+      <tr><td>إجمالي الأقساط على الورق</td><td id="iTotal"></td></tr>
     </table>
     <div class="big">
       <div class="val" id="iBig">0</div>
@@ -421,6 +422,7 @@ function calcInvest(){
     document.getElementById('iInvest').textContent = fmt(r.invest);
     document.getElementById('iInst').textContent = fmt(r.inst);
     document.getElementById('iAnnual').textContent = fmt(r.annualInst);
+    document.getElementById('iTotal').textContent = fmt(r.totalInst);
     var v = document.getElementById('iVerdict');
     if(r.covers){
       countUp(document.getElementById('iBig'), r.leftover);
