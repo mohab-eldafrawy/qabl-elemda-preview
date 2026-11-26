@@ -186,7 +186,7 @@
       <tr><td>المقدم</td><td id="rDown"></td></tr>
       <tr><td>الأقساط على الورق</td><td id="rInst"></td></tr>
       <tr><td>الأقساط بفلوس النهاردة</td><td id="rInstPV"></td></tr>
-      <tr><td>الفرق اللي بيتحسب عليك</td><td id="rDiff"></td></tr>
+      <tr><td>اللي دفعته فعلاً بفلوس النهاردة</td><td id="rDiff"></td></tr>
     </table>
     <div class="tiny">حسبة تقريبية للتوعية مش وعد، بنحسب بـ 15% في السنة، وده متوسط معقول للتضخم المتوقع في السنين الجاية: قراءة أكتوبر 2026 كانت 12.7%، والبنك المركزي متوقع 15-17% السنة المالية دي تنزل لحوالي 8% اللي بعدها، وهدفه 7% بنهاية 2027.</div>
     <button class="btn" style="margin-top:12px" onclick="showCalc2()">لو معاك فلوسها كاش، ممكن تجيبها ببلاش ولا لأ؟</button>
@@ -507,7 +507,7 @@ function calc(){
     document.getElementById('rDown').textContent = fmt(r.down);
     document.getElementById('rInst').textContent = fmt(r.instPaper);
     document.getElementById('rInstPV').textContent = fmt(r.instPV);
-    document.getElementById('rDiff').textContent = fmt(r.diff);
+    document.getElementById('rDiff').textContent = fmt(r.down + r.instPV);
     var res = document.getElementById('result');
     res.style.display = 'block';
     res.scrollIntoView({behavior:'smooth'});
