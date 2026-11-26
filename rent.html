@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قبل الإمضا | حاسبة عائد الإيجار</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Aref+Ruqaa:wght@400;700&family=Changa:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#f6f0e2; --cream2:#fdf9ef; --navy:#1f3b63; --navy2:#16304f; --orange:#e8772e; --ink:#2b2b33;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Changa',sans-serif; color:var(--navy); min-height:100vh;
+    background:var(--cream);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%231f3b63' stroke-opacity='0.07' stroke-width='2'%3E%3Crect x='18' y='90' width='52' height='150'/%3E%3Cpath d='M22 110h44M22 135h44M22 160h44M22 185h44M22 210h44'/%3E%3Crect x='120' y='40' width='70' height='200'/%3E%3Cpath d='M128 62h54M128 88h54M128 114h54M128 140h54M128 166h54M128 192h54'/%3E%3Cpath d='M60 90l40-40 20 20'/%3E%3Ccircle cx='215' cy='60' r='14'/%3E%3Cpath d='M215 30v-16M215 106v-16M245 60h16M201 60h-16'/%3E%3C/g%3E%3C/svg%3E");
+    animation:bgdrift 40s linear infinite;
+  }
+  @keyframes bgdrift{from{background-position:0 0}to{background-position:260px 130px}}
+  .wrap{max-width:520px;margin:0 auto;padding:18px 14px 60px;position:relative}
+
+  /* ===== الهيدر ===== */
+  header{text-align:center;padding:6px 0 2px}
+  .logo{width:130px;height:130px;object-fit:cover;border-radius:26px;box-shadow:0 6px 0 rgba(31,59,99,.12);animation:pop .7s cubic-bezier(.2,1.4,.4,1) both}
+  @keyframes pop{from{transform:scale(.4) rotate(-6deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+  .sig{font-family:'Aref Ruqaa',serif;font-size:19px;color:var(--navy);margin-top:8px;animation:fadeup .8s .3s both}
+  @keyframes fadeup{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+  .hook{font-family:'Lalezar',cursive;font-size:27px;line-height:1.5;margin-top:10px;animation:fadeup .8s .5s both}
+  .hook .hl{color:var(--orange);font-size:33px;display:inline-block;animation:wiggle 2.4s ease-in-out infinite}
+  @keyframes wiggle{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg) scale(1.06)}}
+  .stroke{display:block;margin:2px auto 0;width:190px}
+  .stroke path{stroke:var(--orange);stroke-width:5;fill:none;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400;animation:draw 1.2s 1s forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+
+  /* ===== الكروت ===== */
+  .card{
+    background:var(--cream2);border:2.5px solid var(--navy);border-radius:22px 26px 20px 28px;
+    box-shadow:5px 6px 0 rgba(31,59,99,.16);padding:20px 18px;margin-top:18px;
+    animation:fadeup .7s both;
+  }
+  label{display:block;font-weight:600;font-size:15px;margin:14px 0 6px}
+  label small{font-weight:400;color:#7c7462}
+  input,select{
+    width:100%;padding:13px 14px;border:2px solid #d8cdb4;border-radius:14px 16px 13px 17px;
+    font-size:17px;font-family:inherit;color:var(--ink);background:#fff;transition:border-color .2s, box-shadow .2s;
+  }
+  input:focus,select:focus{outline:none;border-color:var(--orange);box-shadow:0 0 0 3px rgba(232,119,46,.18)}
+  .row{display:flex;gap:10px}.row>div{flex:1}
+
+  .intent{
+    display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #d8cdb4;
+    border-radius:16px 18px 15px 19px;padding:14px;margin-top:10px;font-size:16px;font-weight:600;cursor:pointer;
+    transition:transform .15s, border-color .2s, background .2s;
+  }
+  .intent:active{transform:scale(.97)}
+  .intent .dot{flex:0 0 22px;height:22px;border-radius:50%;border:2.5px solid #c9bd9f;position:relative;transition:border-color .2s}
+  .intent.on{border-color:var(--orange);background:#fff4e8;animation:pick .35s cubic-bezier(.2,1.6,.4,1)}
+  @keyframes pick{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+  .intent.on .dot{border-color:var(--orange)}
+  .intent.on .dot::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--orange);animation:pop .3s both}
+  .intent .fire{margin-right:auto;font-size:18px;visibility:hidden}
+  .intent.on .fire{visibility:visible;animation:wiggle 1.6s infinite}
+
+  .btn{
+    width:100%;margin-top:18px;padding:15px;border:none;border-radius:16px 18px 15px 19px;
+    background:var(--navy);color:var(--cream2);font-family:'Lalezar',cursive;font-size:21px;letter-spacing:.5px;cursor:pointer;
+    box-shadow:0 5px 0 var(--navy2);position:relative;animation:btnpulse 2s ease-in-out infinite;
+  }
+  @keyframes btnpulse{0%,100%{box-shadow:0 5px 0 var(--navy2)}50%{box-shadow:0 5px 0 var(--navy2),0 0 0 6px rgba(232,119,46,.25)}}
+  .btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--navy2);animation:none}
+
+  /* ===== النتيجة ===== */
+  #result{display:none;text-align:center}
+  .big{
+    background:var(--navy);color:var(--cream2);border-radius:20px 24px 19px 25px;padding:20px 14px;margin-top:14px;
+    border:2.5px solid var(--navy2);box-shadow:5px 6px 0 rgba(31,59,99,.25);animation:pop .6s cubic-bezier(.2,1.4,.4,1) both;
+  }
+  .big .val{font-family:'Lalezar',cursive;font-size:46px;color:var(--orange);direction:ltr;line-height:1.1}
+  .big .lbl{font-size:14px;color:#cfd8ea;margin-top:4px}
+  .big .lbl b{color:#fff}
+  .bd{width:100%;margin-top:12px;font-size:14.5px;border-collapse:collapse}
+  .bd td{padding:9px 4px;border-bottom:2px dashed #ddd2b8}
+  .bd td:last-child{text-align:left;font-weight:600;direction:ltr}
+  .bd tr{animation:fadeup .5s both}
+  .bd tr:nth-child(2){animation-delay:.15s}.bd tr:nth-child(3){animation-delay:.3s}.bd tr:nth-child(4){animation-delay:.45s}
+  .tiny{margin-top:12px;font-size:11.5px;color:#8b8168;line-height:1.8;text-align:center}
+
+  .card h2{font-family:'Lalezar',cursive;font-size:23px;text-align:center;color:var(--navy)}
+  .card .sub{font-size:14px;color:#5c5545;margin:6px 0 12px;line-height:1.9;text-align:center}
+
+  .unit{border:2px dashed rgba(31,59,99,.4);border-radius:16px 18px 14px 20px;padding:12px 14px;margin-top:12px;background:rgba(255,255,255,.55)}
+  .unit h3{margin:0 0 6px;font-size:1.02rem;color:var(--navy)}
+  .unit .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+  .unit .chip{background:var(--navy);color:#fff;border-radius:999px;padding:3px 10px;font-size:.78rem}
+  .unit .btn{padding:10px 14px;font-size:.95rem;margin-top:2px}
+  .unit-res{display:none;margin-top:10px;padding:10px;border-radius:12px;background:#fff3e6;border:2px solid var(--orange);font-weight:700;color:var(--navy)}
+  .unit-res b{color:var(--orange)}
+  .sample-note{background:#fff8e1;border:2px solid #e0b93c;color:#6b5310;border-radius:12px;padding:8px 10px;font-size:.85rem;margin-top:10px}
+  .guide-card{text-align:center}
+  .guide-card h2{font-family:'Lalezar',cursive;font-size:22px}
+  .guide-card p{font-size:14px;color:#5c5545;margin-top:6px;line-height:1.9}
+  .btn-wa{background:#1faa59;box-shadow:0 5px 0 #157a40}
+  #leadMsg{display:none;margin-top:10px;font-size:14px;color:#157a40;font-weight:600}
+
+  footer{text-align:center;margin-top:26px;animation:fadeup 1s both}
+  footer .sig2{font-family:'Aref Ruqaa',serif;font-size:17px;color:var(--navy)}
+  footer .links{font-size:11.5px;color:#8b8168;margin-top:4px}
+
+  /* الكاراكتر */
+  #mascot{position:fixed;bottom:8px;left:8px;width:74px;z-index:5;transform-origin:bottom center;animation:sway 2.6s ease-in-out infinite;pointer-events:none;filter:drop-shadow(2px 3px 0 rgba(31,59,99,.15))}
+  @keyframes sway{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg) translateY(-3px)}}
+  .locked{display:none}
+
+  .nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:2px 0 6px;position:sticky;top:0;z-index:5;background:var(--cream);padding:8px 0;border-bottom:2px dashed rgba(31,59,99,.25)}
+  .nav a{text-decoration:none;color:var(--navy);font-weight:800;font-size:14px;padding:8px 13px;border:2px solid var(--navy);border-radius:999px;background:var(--cream2);transition:transform .15s}
+  .nav a:active{transform:scale(.95)}
+  .nav a.on{background:var(--navy);color:#fff}
+  .ptitle{font-family:'Lalezar',cursive;font-size:26px;text-align:center;margin-top:10px}
+  .ptitle .hl{color:var(--orange)}
+  .psub{text-align:center;color:#5c5545;font-size:14px;margin-top:4px;line-height:1.8}
+  .unit .meta{font-size:.85rem;color:#5c5545;margin:0 0 8px;line-height:1.8}
+  .unit .btnrow{display:flex;gap:8px;flex-wrap:wrap}
+  .unit .btnrow .btn{flex:1;min-width:140px}
+  .tag{display:inline-block;background:var(--orange);color:#fff;border-radius:8px;padding:1px 9px;font-size:.75rem;margin-right:6px}
+
+  .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
+  .fgrid label{margin:10px 0 5px;font-size:14px}
+  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .kpi{background:#fff;border:2px solid #d8cdb4;border-radius:14px;padding:10px;text-align:center}
+  .kpi b{display:block;font-family:'Lalezar',cursive;font-size:20px;color:var(--orange);margin-top:2px}
+  .kpi span{font-size:12.5px;color:#5c5545}
+  .tw{overflow-x:auto;margin-top:10px;border:2px solid var(--navy);border-radius:14px}
+  table.t{border-collapse:collapse;width:100%;font-size:13px;min-width:600px;background:#fff}
+  table.t th{background:var(--navy);color:#fff;padding:7px 5px;font-weight:600}
+  table.t td{padding:6px 5px;text-align:center;border-top:1px solid #e6dcc4}
+  table.t tr.ok td{background:#eaf7ee}
+  table.t tr.be td{background:#ffe2c2;font-weight:800}
+  table.t tr.first td{background:#d3f0dc;font-weight:800}
+  .h2{font-family:'Lalezar',cursive;font-size:20px;margin-top:20px}
+  .neg{color:#b3261e}.pos{color:#157a40}
+  .intent{
+    display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #d8cdb4;
+    border-radius:16px 18px 15px 19px;padding:14px;margin-top:10px;font-size:16px;font-weight:600;cursor:pointer;
+    transition:transform .15s, border-color .2s, background .2s;
+  }
+  .intent:active{transform:scale(.97)}
+  .intent .dot{flex:0 0 22px;height:22px;border-radius:50%;border:2.5px solid #c9bd9f;position:relative;transition:border-color .2s}
+  .intent.on{border-color:var(--orange);background:#fff4e8;animation:pick .35s cubic-bezier(.2,1.6,.4,1)}
+  @keyframes pick{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+  .intent.on .dot{border-color:var(--orange)}
+  .intent.on .dot::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--orange);animation:pop .3s both}
+  .intent .fire{margin-right:auto;font-size:18px;visibility:hidden}
+  .intent.on .fire{visibility:visible;animation:wiggle 1.6s infinite}
+.tiny{font-size:12px;color:#7c7462;margin-top:10px;line-height:1.7;text-align:center}
+  .res{background:#fff;border:2px solid #d8cdb4;border-radius:14px;padding:12px;margin-top:12px;line-height:1.9;font-size:15px}
+  .res b{color:var(--orange)}
+  .res.hero{background:#fff4e8;border-color:var(--orange)}
+  .four{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .box{background:#fff;border:2.5px solid var(--navy);border-radius:18px 20px 16px 22px;box-shadow:4px 5px 0 rgba(31,59,99,.14);padding:14px 8px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:4px;min-height:140px}
+  a.tel{display:block;text-align:center;margin-top:10px;font-weight:800;font-size:14px;color:var(--navy)}
+  .box small{font-size:11.5px;color:#7c7462}
+  .box.five{min-height:120px;border-color:var(--orange)}
+  .box.wide{grid-column:1/3;min-height:90px}
+  .box:nth-child(2n){border-color:var(--orange)}
+  .box span{font-size:13px;color:#5c5545;line-height:1.6}
+  .box b{font-family:'Lalezar',cursive;font-size:28px;color:var(--orange);line-height:1.3}
+  .box em{font-style:normal;font-size:13px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav"><a href="index.html">الحاسبة 🧮</a><a href="resale.html">ريسيل</a><a href="developer.html">من المطوّر</a><a href="investment.html">استثمار</a><a href="rent.html" class="on">عائد الإيجار</a></nav>
+  <header>
+    <img class="logo" style="width:90px;height:90px" src="data:image/jpeg;base64,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" alt="قبل الإمضا">
+    <div class="sig">مع مهاب الدفراوي</div>
+    <div class="ptitle">حاسبة <span class="hl">عائد الإيجار</span></div>
+    <div class="psub">الإيجار هيغطي القسط من أنهي سنة؟ وقيمة الوحدة هتبقى كام؟</div>
+  </header>
+  <div class="card" id="gate">
+    <label style="margin-top:0">اسمك</label>
+    <input type="text" id="leadName" name="name" autocomplete="name" autocapitalize="words" placeholder="اكتب اسمك">
+    <label>رقم الموبايل</label>
+    <input type="tel" id="leadPhone" name="tel" autocomplete="tel" inputmode="tel" placeholder="01xxxxxxxxx">
+    <label>بتفكر تشتري إمتى؟</label>
+    <div class="intent" data-v="🔥 بيشتري دلوقتي ومحتاج مساعدة"><span class="dot"></span>بشتري دلوقتي ومحتاج مساعدة<span class="fire">🔥</span></div>
+    <div class="intent" data-v="بيفكر يشتري خلال ٦ شهور"><span class="dot"></span>بفكر أشتري في خلال ٦ شهور</div>
+    <div class="intent" data-v="مش بيفكر يشتري أصلا"><span class="dot"></span>مش بفكر أشتري أصلا</div>
+    <button class="btn" onclick="unlock()">يلا نحسبها</button>
+    <div class="tiny">بضغطك هنا بتسجّل اسمك ورقمك واختيارك، ومهاب ممكن يتواصل معاك واتساب على رقمك.</div>
+  </div>
+
+  <div id="app" class="locked"><div class="card">
+    <div class="fgrid">
+      <div style="grid-column:1/3"><label>طريقة الدفع</label><select id="mode"><option value="inst">تقسيط</option><option value="cash">كاش (دفعة واحدة)</option></select></div>
+      <div><label>سعر الوحدة (ج)</label><input id="price" type="number" inputmode="numeric" value="3000000"></div>
+      <div class="instOnly"><label>المقدم (%)</label><input id="down" type="number" inputmode="decimal" value="10"></div>
+      <div class="instOnly"><label>مدة الأقساط (سنين)</label><input id="yrs" type="number" inputmode="numeric" value="10"></div>
+      <div><label id="startLbl">سنة بداية الأقساط</label><input id="start" type="number" inputmode="numeric" value="2026"></div>
+      <div id="handWrap"><label>سنة الاستلام</label><input id="hand" type="number" inputmode="numeric" value="2030"></div>
+      <div><label id="rentLbl">إيجار السنة وقت الاستلام (ج)</label><input id="rent" type="number" inputmode="numeric" value="300000"></div>
+    </div>
+    <button class="btn" id="go" style="margin-top:16px;width:100%">احسب</button>
+    <div id="out" style="display:none">
+      <div id="res"></div>
+      <button class="btn btn-wa" id="waBtn" style="margin-top:14px;width:100%">ابعتلي شيت الإكسل واتساب</button>
+      <button class="btn btn-wa" id="waBtn2" style="margin-top:10px;width:100%">محتاج حد يشرحلي</button>
+      <a href="tel:+201035296292" class="tel">أو اتصل بنا: 01035296292</a>
+      <div class="sample-note">أرقام تقديرية على افتراضاتك، مش وعد بعائد. الإيجار بيبدأ في سنة الاستلام وبيزيد كل سنة بعدها.</div>
+    </div>
+  </div></div>
+  <footer>
+    <div class="sig2">قبل الإمضا … غير بعدها</div>
+    <div class="links">يوتيوب «قبل الإمضا» • تيك توك @mohabeldafrawy</div>
+  </footer>
+</div>
+<script>
+/* ثوابت مهاب: غيّرهم من هنا بس */
+var RENT_GROWTH_PCT = 12;
+var APPRECIATION_PCT = 15;
+function fmt(x){ return Math.round(x).toLocaleString("en-US"); }
+function v(id){ return parseFloat(document.getElementById(id).value)||0; }
+function calc(){
+  var P=v('price'),D=v('down'),N=Math.round(v('yrs')),S=Math.round(v('start')),H=Math.round(v('hand')),R=v('rent'),G=RENT_GROWTH_PCT/100,A=APPRECIATION_PCT/100;
+  var cash=(document.getElementById('mode').value==='cash');
+  if(cash){ D=0; N=1; H=S; }
+  if(P<=0||N<1||D<0||D>=100){ alert('راجع الأرقام.'); return; }
+  var down=P*D/100, fin=P-down, inst=fin/N, cum=0, first=null, cr=0, be=null, rows='', L=[];
+  var ROWS=Math.max(20,N), py=0, pf=null, pl=null;
+  for(var i=0;i<ROWS;i++){
+    var y=S+i, ins=(y>=S&&y<S+N)?inst:0, rent=(y<H)?0:R*Math.pow(1+G,y-H);
+    if(cash) ins=(y===S)?P:0;
+    var net=cash?ins:Math.max(0,ins-rent); cum+=net; if(net>0){ py++; if(pf===null) pf=y; pl=y; }
+    L.push({y:y,ins:ins,rent:rent,net:net,cum:cum});
+  }
+  var total=cum, cr2=0;
+  function gain(y){ return y>=H ? P*(Math.pow(1+A,y-H)-1) : 0; }
+  var SH=0;
+  for(var j=0;j<L.length;j++){ cr2+=L[j].rent; if(be===null&&total>0&&cr2+SH*gain(L[j].y)>=total-0.5) be=L[j].y; }
+  for(var i2=ROWS;be===null&&i2<60&&R>0&&total>0;i2++){ var yy=S+i2, rr=(yy<H)?0:R*Math.pow(1+G,yy-H); cr2+=rr; L.push({y:yy,ins:0,rent:rr,net:0,cum:total}); if(cr2+SH*gain(yy)>=total-0.5) be=yy; }
+  L.forEach(function(r){ var cov=(r.ins>0&&r.rent>=r.ins); if(cov&&first===null) first=r.y; });
+  var after=0; if(!cash) L.forEach(function(r){ if(r.y>=H) after+=r.net; });
+  if(cash) first=S;
+  var vH=P, v5=P*Math.pow(1+A,5), r5=0; for(var q=0;q<5;q++){ r5+=R*Math.pow(1+G,q+(H-H)); }
+  var rp5=total>0?r5/total*100:0;
+  var yrsTxt=py+(py<3?' سنة':' سنين');
+  var h='<div class="four">'
+   +'<div class="box"><span>السنة اللي هتبدأ تأجر فيها</span><b>'+H+'</b></div>'
+   +'<div class="box"><span>اللي هتدفعه من جيبك</span><b>'+fmt(total)+' ج</b><em>'+(cash?'كاش مرة واحدة سنة '+S:py>0?'على '+yrsTxt+' ('+pf+(pl!==pf?' إلى '+pl:'')+')':'مش هتدفع من جيبك')+'</em></div>'
+   +'<div class="box"><span>'+(cash?'مفيش أقساط: دفعت كاش مرة واحدة سنة':'السنة اللي مش هتدفع بعدها من جيبك (الإيجار بيغطي القسط)')+'</span><b>'+(first===null?'مفيش في المدة':first)+'</b></div>'
+   +'<div class="box"><span>سنة التعادل (الإيجار'+(SH>0?' + جزء من زيادة سعر الوحدة':' المتجمّع')+' = اللي دفعته)</span><b>'+(be===null?'مفيش تعادل':be)+'</b></div>'
+   +'<div class="box wide"><span>العائد السنوي (إيجار سنة الاستلام ÷ اللي دفعته)</span><b>'+(total>0?(R/total*100).toFixed(1)+'%':'-')+'</b></div>'
+   +'<div class="box wide five"><span>بعد 5 سنين هتكون كسبت إيجارات</span><b>'+fmt(r5)+' ج</b><em>= '+rp5.toFixed(0)+'% من اللي دفعته، والوحدة هتبقى سعرها '+fmt(v5)+' ج</em><small>ده سيناريو متحفّظ جداً (الحالة الصعبة قوي)</small></div></div>';
+  if(after>0) h+='<div class="sample-note">تنبيه: هتفضل تدفع من جيبك '+fmt(after)+' ج بعد الاستلام.</div>';
+  document.getElementById('res').innerHTML=h;
+  window.__sum={cash:cash,P:P,D:D,N:N,S:S,H:H,R:R,G:G*100,A:A*100,total:total,py:py,pf:pf,pl:pl,first:first,be:be,v5:v5};
+  document.getElementById('out').style.display='block';
+}
+
+document.getElementById('go').addEventListener('click',calc);
+document.getElementById('mode').addEventListener('change',function(){
+  var c=this.value==='cash';
+  document.querySelectorAll('.instOnly').forEach(function(e){ e.style.display=c?'none':''; });
+  document.getElementById('startLbl').textContent=c?'سنة الشراء':'سنة بداية الأقساط';
+  document.getElementById('handWrap').style.display=c?'none':'';
+  document.getElementById('rentLbl').textContent=c?'إيجار أول سنة (ج)':'إيجار السنة وقت الاستلام (ج)';
+});
+var LEADS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxZazefSknItf4HTo24BQEJUGCaG6cr_rH9Km9hiRv3U4EmeeVmCDvtp2_JQLk4ukn0/exec";
+var WHATSAPP_NUMBER = "201035296292";
+var chosenIntent = "";
+document.querySelectorAll('.intent').forEach(function(el){
+  el.addEventListener('click', function(){
+    document.querySelectorAll('.intent').forEach(function(x){ x.classList.remove('on'); });
+    el.classList.add('on'); chosenIntent = el.getAttribute('data-v');
+  });
+});
+function normPhone(p){
+  p = (p||"").replace(/[٠-٩۰-۹]/g, function(d){ var i = "٠١٢٣٤٥٦٧٨٩۰۱۲۳۴۵۶۷۸۹".indexOf(d); return (i%10)+""; });
+  if(/[a-zA-Zء-ي]/.test(p)){ return null; }
+  var hadPlus = /^\s*\+/.test(p);
+  p = p.replace(/[\s\-\(\)]/g,"");
+  var digits = p.replace(/\D/g,"");
+  var eg = digits;
+  if(eg.indexOf("0020")===0){ eg = "0"+eg.substring(4); }
+  else if(eg.indexOf("20")===0 && eg.length===12){ eg = "0"+eg.substring(2); }
+  if(/^1[0125][0-9]{8}$/.test(eg)){ eg = "0"+eg; }
+  if(/^01[0125][0-9]{8}$/.test(eg) && !/^(\d)\1+$/.test(eg.substring(1))){ return "2"+eg; }
+  var intl = null;
+  if(hadPlus){ intl = digits; }
+  else if(p.indexOf("00")===0){ intl = digits.substring(2); }
+  if(intl && intl.length>=8 && intl.length<=15 && !/^(\d)\1+$/.test(intl)){ return intl; }
+  return null;
+}
+var PHONE_ERR = "رقم الموبايل مش صح. اكتب رقم مصري 11 رقم يبدأ بـ 010 أو 011 أو 012 أو 015، أو رقم دولي بـ + وكود الدولة.";
+function postLead(name, phone, intent, kind){
+  if(LEADS_ENDPOINT){
+    try {
+      fetch(LEADS_ENDPOINT, {method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:'name='+encodeURIComponent(name)+'&phone='+encodeURIComponent(phone)
+          +'&intent='+encodeURIComponent(intent)+'&source='+encodeURIComponent(kind)+'&strict=1'});
+    } catch(e){}
+  }
+}
+
+function unlock(){
+  var name = document.getElementById('leadName').value.trim();
+  var rawPhone = document.getElementById('leadPhone').value;
+  var phone = normPhone(rawPhone);
+  if(!name){ alert("اكتب اسمك."); return; }
+  if(!phone){ alert(PHONE_ERR); return; }
+  if(!chosenIntent){ alert("اختار: بتفكر تشتري إمتى؟"); return; }
+  postLead(name, rawPhone.trim(), chosenIntent, 'حاسبة عائد الإيجار');
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('app').classList.remove('locked');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function sendWA(opener){
+  var x=window.__sum; if(!x) return;
+  var msg=opener+"\nسعر الوحدة: "+fmt(x.P)+" ج"+(x.cash?"\nالدفع: كاش سنة "+x.S:"\nالمقدم: "+x.D+"%\nمدة الأقساط: "+x.N+" سنين (من "+x.S+")")+"\nسنة الاستلام: "+x.H+"\nإيجار سنة الاستلام: "+fmt(x.R)+" ج\nهدفع من جيبي: "+fmt(x.total)+" ج"+(x.be?"\nالتعادل: سنة "+x.be:"");
+  window.open("https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(msg),"_blank");
+}
+document.getElementById('waBtn').addEventListener('click',function(){ sendWA("أهلاً، أنا استخدمت حاسبة «عائد الإيجار» وعايز شيت الإكسل بالتفاصيل سنة بسنة."); });
+document.getElementById('waBtn2').addEventListener('click',function(){ sendWA("أهلاً، أنا استخدمت حاسبة «عائد الإيجار» وعايز أحجز موعد/مكالمة عشان تفهمني الأرقام دي."); });
+</script>
+</body>
+</html>
