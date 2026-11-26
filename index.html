@@ -467,7 +467,19 @@ function calcInvest(){
     var res = document.getElementById('cashResult');
     res.style.display = 'block';
     res.scrollIntoView({behavior:'smooth'});
+    postCalcInputs(C, P, dpp, n, m);
   });
+}
+function postCalcInputs(C, P, dpp, n, m){
+  if(!LEADS_ENDPOINT){ return; }
+  var rawPhone = (document.getElementById('leadPhone').value||"").trim();
+  if(!rawPhone){ return; }
+  try {
+    fetch(LEADS_ENDPOINT, {method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:'action=calcInputs&phone='+encodeURIComponent(rawPhone)
+        +'&cash='+C+'&price='+P+'&down='+dpp+'&n='+n+'&m='+m});
+  } catch(e){}
 }
 function fmt(x){ return Math.round(x).toLocaleString("en-US"); }
 function countUp(el, target){
