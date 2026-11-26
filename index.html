@@ -288,25 +288,31 @@ document.querySelectorAll('.intent').forEach(function(el){
 });
 
 function normPhone(p){
-  p = (p||"").replace(/\D/g,'');
-  if(p.indexOf("00")===0){ p = p.substring(2); }
-  if(p.indexOf("01")===0 && p.length===11){ p = "2"+p; }
-  return p;
+  p = (p||"").replace(/[٠-٩]/g, function(d){ return "٠١٢٣٤٥٦٧٨٩".indexOf(d)+""; });
+  p = p.replace(/[\s\-\(\)]/g,"").replace(/^\+/,"");
+  if(p.indexOf("0020")===0){ p = p.substring(4); }
+  else if(p.indexOf("20")===0){ p = p.substring(2); }
+  p = p.replace(/\D/g,"");
+  if(/^1[0125][0-9]{8}$/.test(p)){ p = "0"+p; }
+  if(/^01[0125][0-9]{8}$/.test(p)){ return p; }
+  return null;
 }
+var PHONE_ERR = "رقم الموبايل مش صح. اكتب رقم مصري 11 رقم يبدأ بـ 010 أو 011 أو 012 أو 015.";
 function postLead(name, phone, intent, kind){
   if(LEADS_ENDPOINT){
     try {
       fetch(LEADS_ENDPOINT, {method:'POST', mode:'no-cors',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
         body:'name='+encodeURIComponent(name)+'&phone='+encodeURIComponent(phone)
-          +'&intent='+encodeURIComponent(intent)+'&source='+encodeURIComponent(kind)});
+          +'&intent='+encodeURIComponent(intent)+'&source='+encodeURIComponent(kind)+'&strict=1'});
     } catch(e){}
   }
 }
 function unlock(){
   var name = document.getElementById('leadName').value.trim();
   var phone = normPhone(document.getElementById('leadPhone').value);
-  if(!name || phone.length < 10){ alert("اكتب اسمك ورقم موبايلك صح."); return; }
+  if(!name){ alert("اكتب اسمك."); return; }
+  if(!phone){ alert(PHONE_ERR); return; }
   if(!chosenIntent){ alert("اختار: بتفكر تشتري إمتى؟"); return; }
   postLead(name, phone, chosenIntent, 'حاسبة قبل الإمضا');
   document.getElementById('gate').style.display = 'none';
@@ -316,6 +322,7 @@ function unlock(){
 function sendGuide(){
   var name = document.getElementById('leadName').value.trim();
   var phone = normPhone(document.getElementById('leadPhone').value);
+  if(!phone){ alert(PHONE_ERR); return; }
   postLead(name, phone, chosenIntent, 'طلب الجايد');
   document.getElementById('leadMsg').style.display = 'block';
 }
