@@ -317,20 +317,22 @@ function postLead(name, phone, intent, kind){
 }
 function unlock(){
   var name = document.getElementById('leadName').value.trim();
-  var phone = normPhone(document.getElementById('leadPhone').value);
+  var rawPhone = document.getElementById('leadPhone').value;
+  var phone = normPhone(rawPhone);
   if(!name){ alert("اكتب اسمك."); return; }
   if(!phone){ alert(PHONE_ERR); return; }
   if(!chosenIntent){ alert("اختار: بتفكر تشتري إمتى؟"); return; }
-  postLead(name, phone, chosenIntent, 'حاسبة قبل الإمضا');
+  postLead(name, rawPhone.trim(), chosenIntent, 'حاسبة قبل الإمضا');
   document.getElementById('gate').style.display = 'none';
   document.getElementById('app').classList.remove('locked');
   window.scrollTo({top:0, behavior:'smooth'});
 }
 function sendGuide(){
   var name = document.getElementById('leadName').value.trim();
-  var phone = normPhone(document.getElementById('leadPhone').value);
+  var rawPhone = document.getElementById('leadPhone').value;
+  var phone = normPhone(rawPhone);
   if(!phone){ alert(PHONE_ERR); return; }
-  postLead(name, phone, chosenIntent, 'طلب الجايد');
+  postLead(name, rawPhone.trim(), chosenIntent, 'طلب الجايد');
   document.getElementById('leadMsg').style.display = 'block';
 }
 var CB_N = 0;
