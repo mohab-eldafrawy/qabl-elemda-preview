@@ -334,6 +334,7 @@ function unlock(){
   if(!name){ alert("اكتب اسمك."); return; }
   if(!phone){ alert(PHONE_ERR); return; }
   if(!chosenIntent){ alert("اختار: بتفكر تشتري إمتى؟"); return; }
+  try{localStorage.setItem('qe_lead_v1',JSON.stringify({name:name,phone:rawPhone.trim(),intent:chosenIntent}));}catch(e){}
   postLead(name, rawPhone.trim(), chosenIntent, 'حاسبة قبل الإمضا');
   document.getElementById('gate').style.display = 'none';
   document.getElementById('app').classList.remove('locked');
@@ -400,7 +401,7 @@ function calcUnit(i, btn){
     if(!r || r.error){ alert('راجع الأرقام.'); return; }
     var res = document.getElementById('ures'+i);
     res.innerHTML = 'قيمتها <b>بفلوس النهاردة: '+fmt(r.pv)+' ج</b><br>'
-      + 'يعني خطة التقسيط دي بتاكل من قيمتها حوالي <b>'+fmt(r.diff)+' ج</b> مقارنة بسعرها النهاردة.';
+      + 'يعني خطة التقسيط دي بتوفر لك من تمنها حوالي <b>'+fmt(r.diff)+' ج</b> مقارنة بسعرها كاش النهاردة.';
     res.style.display = 'block';
   });
 }
@@ -512,6 +513,12 @@ function calc(){
     res.scrollIntoView({behavior:'smooth'});
   });
 }
+
+(function(){try{var s=JSON.parse(localStorage.getItem('qe_lead_v1')||'null');
+  if(s&&s.name&&s.phone&&s.intent){
+    document.getElementById('leadName').value=s.name; document.getElementById('leadPhone').value=s.phone; chosenIntent=s.intent;
+    document.getElementById('gate').style.display='none'; document.getElementById('app').classList.remove('locked');
+  }}catch(e){}})();
 </script>
 </body>
 </html>
