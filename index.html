@@ -232,6 +232,10 @@
     </div>
     <div class="tiny">الفلوس متقسّمة على شهادات بمواعيد استحقاق متدرّجة (سنة وسنين لحد آخر الخطة)، كل سنة في جزء بيستحق يغطي قسط السنة، والباقي بيتجدّد. يعني مش هتدفع جنيه زيادة من جيبك طول الخطة.</div>
     <div class="tiny">بنفترض إن فلوسك متستثمرة بعائد 20% في السنة، في حدود عوائد الشهادات البنكية الحالية، والعائد بيتراكم مع كل فترة قسط. أرقام تقريبية للتوضيح مش وعد، والقرار في الآخر قرارك.</div>
+    <div style="text-align:center;margin-top:14px;border-top:1px dashed #d8cfb8;padding-top:14px">
+      <div class="tiny" style="font-weight:700;margin-bottom:8px">عايز تعرف حسابتك دي اتعملت إزاي بالتفصيل؟</div>
+      <button class="btn btn-wa" onclick="sendCalcWA()">ابعتلنا واتساب وهنبعتلك شيت إكسل بحسابتك 📊</button>
+    </div>
   </div>
   </div>
 
@@ -277,6 +281,14 @@
 
 <script>
 var LEADS_ENDPOINT = "https://script.google.com/macros/s/AKfycbxZazefSknItf4HTo24BQEJUGCaG6cr_rH9Km9hiRv3U4EmeeVmCDvtp2_JQLk4ukn0/exec";
+var WHATSAPP_NUMBER = "201035296292";
+function sendCalcWA(){
+  var C = num('cCashAmt'), P = num('cPrice'), dpp = num('cDown'), n = num('cN');
+  var per = document.getElementById('cPeriod');
+  var perTxt = per.options[per.selectedIndex].text;
+  var msg = "أهلاً مهاب، أنا استخدمت حاسبة «قبل الإمضا» وعايز شيت الإكسل بحسابتي.\nالكاش اللي معايا: " + fmt(C) + " ج\nسعر الوحدة: " + fmt(P) + " ج\nالمقدم: " + dpp + "%\nعدد الأقساط: " + n + " (قسط كل " + perTxt + ")";
+  window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg), "_blank");
+}
 
 var chosenIntent = "";
 document.querySelectorAll('.intent').forEach(function(el){
